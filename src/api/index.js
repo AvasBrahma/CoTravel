@@ -1,57 +1,53 @@
-import { LOCALSTORAGE_TOKEN_KEY } from "../utils";
+import { LOCALSTORAGE_TOKEN_KEY, API_URLS } from '../utils';
 
-const customFetch=async (url, {body, ...customConfig})=>{
-    const token=window.localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
 
-   const headers={
-       'content-type': 'application/json',
-       Accept: 'application/json'
-   }
+const customFetch = async (url, { body, ...customConfig }) => {
+  const token = window.localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
 
-   if(token){
-     headers.Authorization=`Bearer ${token}`;
-   }
-    
-  const config={
-      ...customConfig,
-      headers:{
-        ...headers,
-        ...customConfig.headers
-      }
+  const headers = {
+    'content-type': 'application/json',
+    Accept: 'application/json',
   };
-    
-  if(body){
-    config.body=JSON.stringify(body);
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
   }
 
+  const config = {
+    ...customConfig,
+    headers: {
+      ...headers,
+      ...customConfig.headers,
+    },
+  };
 
+  if (body) {
+    config.body = JSON.stringify(body);
+  }
 
+  try {
+    const response = await fetch(url, config);
+    const data = await response.json();
 
-    try {
- 
-        const response=await fetch(url, config);
-       const data= await response.json();
-
-        if(response.success){
-          return{
-            data:data.data,
-            success: true
-          }
-        }
-        throw new Error(data.message);
-
-    } catch (error) {
-        console.log('Error :' , error);
-        return{
-            data:error.message,
-            success: false
-          }
+    if (data.success) {
+      return {
+        data: data.data,
+        success: true,
+      };
     }
 
-}
+    throw new Error(data.message);
+  } catch (error) {
+    console.error('error');
+    return {
+      message: error.message,
+      success: false,
+    };
+  }
+};
 
-const getPosts=(page, limit)=>{
-    return customFetch();
-}
-
-
+export const getPosts = (page = 1, limit = 5) => {
+  return customFetch(API_URLS.posts(page, limit), {
+    method: 'GET',
+  });
+};
