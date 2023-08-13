@@ -36,7 +36,7 @@ function App() {
     <div className="App">
         
          <Router>
-         <Navbar />
+           <Navbar />
         <Routes> {/* Wrap your Route components with Routes */}
           <Route path="/" element={<Home posts={posts} />} />
           <Route path="/login" element={<Login />} />
