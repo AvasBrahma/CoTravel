@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { getPosts } from '../api';
 import {Home, Login} from '../pages';
 import { Loader, Navbar } from './';
+import { useAuth } from '../hooks';
 
 const Page404=()=>{
   return <h1>Page 404</h1>
@@ -12,7 +13,7 @@ const Page404=()=>{
 function App() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+  const auth= useAuth();
 
   useEffect(() => {
     const fetchPosts = async () => {
