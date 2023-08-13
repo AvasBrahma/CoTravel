@@ -38,7 +38,6 @@ const customFetch = async (url, { body, ...customConfig }) => {
 
     throw new Error(data.message);
   } catch (error) {
-    console.error('error');
     return {
       message: error.message,
       success: false,

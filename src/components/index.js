@@ -1,5 +1,8 @@
 import App from './App';
-
+import Loader from './Loader';
+import Navbar from './NavBar';
 export {
-  App
+  App,
+  Loader,
+  Navbar
 }
